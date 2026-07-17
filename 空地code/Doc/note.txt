@@ -1,0 +1,55 @@
+
+
+APB1   42m
+APB2   84m
+
+TIMx clk = APBx *2
+
+中断优先级：
+
+第0组：所有4位用于指定响应优先级；
+第1组：最高1位用于指定抢占式优先级，最低3位用于指定响应优先级；
+第2组：最高2位用于指定抢占式优先级，最低2位用于指定响应优先级；
+第3组：最高3位用于指定抢占式优先级，最低1位用于指定响应优先级；
+第4组：所有4位用于指定抢占式优先级。
+|先抢占，再响应|
+1）如果指定的抢占式优先级别或响应优先级别超出了选定的优先级分组所限定的范围，将可能得到意想不到的结果；
+2）抢占式优先级别相同的中断源之间没有嵌套关系；
+3）如果某个中断源被指定为某个抢占式优先级别，又没有其它中断源处于同一个抢占式优先级别，则可以为这个中断源指定任意有效的响应优先级别。
+
+
+STM32 拓展IO映射：
+IO1 - TIM3_CH1 - PC6
+IO2 - TIM3_CH2 - PC7 (不可用,被SBUS输入占用)
+IO3 - TIM3_CH3 - PB0
+IO4 - TIM3_CH4 - PB1
+IO5 - TIM4_CH1 - PD12
+IO6 - TIM4_CH2 - PD13
+IO7 - TIM4_CH3 - PD14
+IO8 - TIM4_CH4 - PD15
+
+PWMOUT1 - TIM1_CH4 - PE14
+PWMOUT2 - TIM1_CH3 - PE13
+PWMOUT3 - TIM1_CH2 - PE11
+PWMOUT4 - TIM1_CH1 - PE9
+
+PWMOUT5 - TIM5_CH4 - PA3
+PWMOUT6 - TIM5_CH3 - PA2
+PWMOUT7 - TIM8_CH4 - PC9
+PWMOUT8 - TIM8_CH3 - PC8
+
+
+Note:
+struct fmt 与 c 对应表:
+< 小端模式, 必须填写保证字节对齐
+b int8_t
+B uint8_t
+h int16_t
+H uint16_t
+i int32_t
+I uint32_t
+
+
+右下角
+x=53
+y=51

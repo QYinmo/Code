@@ -1,0 +1,14 @@
+# gitignore
+.idea/
+.vscode/
+__pycache__/
+/.DS_Store
+/fc_log.log
+# /ANO_FC/ANO_LX_FC/ProjectSTM32F407/build/
+.DS_Store
+._*
+build/
+package/build
+package/install
+package/log
+python_sdk/fc_log

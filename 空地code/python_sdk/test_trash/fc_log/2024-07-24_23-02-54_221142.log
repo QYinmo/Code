@@ -1,0 +1,16 @@
+2024-07-24 23:02:54.839 | DEBUG    | FlightController.Components.RosNode:<module>:28 - [ROS] rclpy.init()
+2024-07-24 23:02:55.321 | WARNING  | __main__:<module>:181 - DEBUG MODE!!
+2024-07-24 23:02:55.322 | INFO     | FlightController.Remote:connect:207 - [FC_Client] Connecting to ('127.0.0.1', 5654)
+2024-07-24 23:02:55.324 | INFO     | FlightController.Remote:_client_task:162 - [FC_Client] Connected to server
+2024-07-24 23:02:55.423 | INFO     | FlightController.Protocal:_action_log:32 - [FC] [ACTION] WAIT OK -> fc connection
+2024-07-24 23:02:55.466 | INFO     | FlightController.Components.RosNode:__init__:89 - [ROS] T265ListenNode ready to start
+2024-07-24 23:02:55.467 | INFO     | FlightController.Components.RealSense:start:222 - [T265] Running in ROS mode, ready for topic update
+2024-07-24 23:02:55.472 | INFO     | FlightController.Components.RosNode:__init__:46 - [ROS] RadarListenNode ready to start
+2024-07-24 23:02:55.473 | INFO     | FlightController.Components.LDRadar_Driver:start:118 - [RADAR] Map resolve thread started
+2024-07-24 23:02:55.655 | INFO     | __main__:<module>:192 - Camera 0 opened
+2024-07-24 23:02:55.667 | INFO     | FlightController.Components.RosNode:__init__:202 - [ROS] PyTf2ListenNode_camera_pose_frame_map ready to start
+2024-07-24 23:02:55.679 | INFO     | FlightController.Components.RosNode:__init__:105 - [ROS] MapListenNode ready to start
+2024-07-24 23:02:55.695 | INFO     | FlightController.Components.RosNode:__init__:125 - [ROS] MapClientNode ready to start
+2024-07-24 23:02:55.696 | INFO     | FlightController.Components.RosMapper:__init__:57 - [MAPPER] Init success
+2024-07-24 23:02:55.697 | DEBUG    | FlightController.Components.RosNode:add_nodes:247 - [ROS] Executor added 5 nodes
+2024-07-24 23:02:55.698 | INFO     | FlightController.Components.RosNode:run:256 - [ROS] Executor started

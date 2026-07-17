@@ -1,0 +1,158 @@
+from route_new import get_route
+import argparse
+import os
+import time
+import numpy as np
+from FlightController import FC_Client, FC_Controller
+from FlightController.Components import LD_Radar
+from loguru import logger
+from SC import Controller, State
+
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+# 全局配置参数
+
+speed = 0.0
+base_x = 0
+base_y = 0
+target_speed = 200
+dl = 0.03
+DT = 0.1
+
+# 舵机参数
+pulse_list = [1000, 1100, 1200, 1300, 1400, 1500,
+              1600, 1700, 1800, 1900, 2000, 2100, 2200, 2300]
+deg_list = [35, 31, 24, 16, 7, 0, -6, -9, -13, -19, -20.5, -22, -23.7, -24]
+rad_list = np.deg2rad(deg_list)
+max_angle_r = deg_list[0]
+max_angle_l = deg_list[-1]
+max_angle_r_rad = rad_list[0]
+max_angle_l_rad = rad_list[-1]
+
+
+def callback(state):
+    global speed
+    v = state.motor_x_speed.value + 0.7
+    speed += (v - speed) * 0.1
+
+
+def get_pulse_from_deg(deg):
+    if deg >= deg_list[0]:
+        return pulse_list[0]
+    if deg <= deg_list[-1]:
+        return pulse_list[-1]
+    for i in range(len(deg_list) - 1):
+        if deg_list[i + 1] <= deg <= deg_list[i]:
+            return np.interp(deg, [deg_list[i + 1], deg_list[i]], [pulse_list[i + 1], pulse_list[i]])
+
+
+def motor_lr(vx: float, vz: float):
+    Axle_spacing = 0.146  # 小车前后轴轴距 单位：m
+    Wheel_spacing = 0.163  # 主动轮轮距 单位：m
+
+    # 对于阿克曼小车vz代表右前轮转向角度
+    R = Axle_spacing / np.tan(vz) - 0.5 * Wheel_spacing
+    # 转弯半径 单位：m
+    # 前轮转向角度限幅(舵机控制前轮转向角度)，单位：rad
+    if vz > max_angle_r_rad:
+        vz = max_angle_r_rad
+    elif vz < max_angle_l_rad:
+        vz = max_angle_l_rad
+    # 运动学逆解
+    if vz != 0:
+        vl = vx * (R - 0.5 * Wheel_spacing) / R
+        vr = vx * (R + 0.5 * Wheel_spacing) / R
+    else:
+        vl = vx
+        vr = vx
+    return vl, vr
+
+
+def update_steer_and_speed(fc, steer_rad: float, speed_mps: float, speed_y: float = 0):
+    WHEEL_PERIMETER = 0.21049
+    def rpm(speed_mps): return speed_mps / WHEEL_PERIMETER * 60
+    steer_deg = np.rad2deg(-steer_rad)
+    fc.set_steer_and_speed(speed_mps, steer_rad)
+
+
+def get_xy_yaw(radar):
+    x2_cm, y2_cm, yaw2 = radar.rt_pose
+    return -y2_cm / 100, x2_cm / 100, np.deg2rad(-yaw2+90)
+ # 从雷达获取坐标并转换为统一坐标系
+
+def calibrate(radar):
+    global base_x, base_y
+    x, y, yaw = get_xy_yaw(radar=radar)
+    base_x = x - 1.25
+    base_y = y - 0.38
+ # 校准基准点坐标
+
+def get_xyyaw_relative(radar):
+    x, y, yaw = get_xy_yaw(radar=radar)
+    return x - base_x, y - base_y, yaw
+   # 获取相对坐标
+
+def update_state(radar, mpst, vel=None):   # 更新小车状态（位置、方向、速度）
+    x, y, yaw = get_xyyaw_relative(radar)
+    v = speed
+    logger.debug(f"x: {x}, y: {y}, yaw: {yaw}, v: {v}")
+    mpst.update_state(x, y, yaw, v)
+
+
+def navigation_loop(fc, radar, target_x, target_y, is_return=False):
+    """执行单次导航循环"""
+    x, y, yaw = get_xyyaw_relative(radar)
+    enter_p, leave_p = get_route(x, y, target_x, 0, target_y, 0, dl=dl)
+    cx, cy, cyaw, ck = leave_p if is_return else enter_p
+
+    initial_state = State(x, y, yaw, target_speed)
+    mpst = Controller(cx, cy, cyaw, ck, target_speed, dl, initial_state)
+    update_state(radar, mpst)
+
+    last_update = time.perf_counter()
+    for steer, acc in mpst.iter_output():
+        vel = mpst.get_speed() * 1.2
+        update_steer_and_speed(fc, steer, vel)
+        logger.debug(f"steer: {steer}, acc: {acc}, vel: {vel}")
+
+        while time.perf_counter() - last_update < DT:
+            time.sleep(0.02)
+        last_update = time.perf_counter()
+        update_state(radar, mpst)
+
+    update_steer_and_speed(fc, 0, 0)
+    time.sleep(1)
+
+
+if __name__ == "__main__":
+    # 初始化硬件
+    x0 = 2.9232
+    y0 = 1.848375451263538
+    fc = FC_Client()
+    fc.connect() # 建立连接并开始雷达定位
+    fc.wait_for_connection(5)
+
+    radar = LD_Radar()
+    radar.start("/dev/ttyUSB0", "LD06")
+    radar.start_resolve_pose(800, 0.7, 0.3, rotation_adapt=True)
+
+    # 初始化状态
+    update_steer_and_speed(fc, 0, 0, 0)
+    time.sleep(2)
+    calibrate(radar)
+
+    try:
+        # 去程导航
+        navigation_loop(fc, radar, x0, y0, is_return=False)
+
+        # 这里可以添加火源检测等逻辑
+        # detector = Detector(fc)
+        # detector.process()
+
+        # 返程导航
+        navigation_loop(radar, x0, y0, is_return=True)
+
+    finally:
+        update_steer_and_speed(fc, 0, 0)
+        time.sleep(1)
+        logger.info("任务完成")

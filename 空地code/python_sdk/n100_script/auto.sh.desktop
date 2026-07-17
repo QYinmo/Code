@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=~/script/auto.sh
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[en_US]=usr_script
+Name=usr_script
+Comment[en_US]=autostart
+Comment=autostart

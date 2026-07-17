@@ -1,0 +1,14 @@
+ 26/06 15:43:13,154 DEBUG [9548] (mf-hid.cpp:380) res=pSensorManager->GetSensorsByCategory(SENSOR_CATEGORY_ALL, &pSensorCollection) returned: HResult 0x80070490: "找不到元素。"
+ 26/06 15:43:13,186 DEBUG [9548] (mf-backend.cpp:205) starting win_event_device_watcher
+ 26/06 15:43:13,187 DEBUG [9548] (mf-hid.cpp:380) res=pSensorManager->GetSensorsByCategory(SENSOR_CATEGORY_ALL, &pSensorCollection) returned: HResult 0x80070490: "找不到元素。"
+ 26/06 15:43:13,199 DEBUG [9548] (mf-hid.cpp:380) res=pSensorManager->GetSensorsByCategory(SENSOR_CATEGORY_ALL, &pSensorCollection) returned: HResult 0x80070490: "找不到元素。"
+ 26/06 15:43:13,210 INFO [9548] (context.cpp:382) Found 1 RealSense devices (mask 0xff)
+ 26/06 15:43:13,218 WARNING [9548] (rs.cpp:1958) null pointer passed for argument "profile"
+ 26/06 15:43:13,295 DEBUG [9548] (mf-backend.cpp:216) stopping win_event_device_watcher
+ 26/06 15:43:29,508 DEBUG [4736] (mf-hid.cpp:380) res=pSensorManager->GetSensorsByCategory(SENSOR_CATEGORY_ALL, &pSensorCollection) returned: HResult 0x80070490: "找不到元素。"
+ 26/06 15:43:29,544 DEBUG [4736] (mf-backend.cpp:205) starting win_event_device_watcher
+ 26/06 15:43:29,544 DEBUG [4736] (mf-hid.cpp:380) res=pSensorManager->GetSensorsByCategory(SENSOR_CATEGORY_ALL, &pSensorCollection) returned: HResult 0x80070490: "找不到元素。"
+ 26/06 15:43:29,555 DEBUG [4736] (mf-hid.cpp:380) res=pSensorManager->GetSensorsByCategory(SENSOR_CATEGORY_ALL, &pSensorCollection) returned: HResult 0x80070490: "找不到元素。"
+ 26/06 15:43:29,567 INFO [4736] (context.cpp:382) Found 1 RealSense devices (mask 0xff)
+ 26/06 15:43:29,567 WARNING [4736] (rs.cpp:1958) null pointer passed for argument "profile"
+ 26/06 15:43:29,632 DEBUG [4736] (mf-backend.cpp:216) stopping win_event_device_watcher

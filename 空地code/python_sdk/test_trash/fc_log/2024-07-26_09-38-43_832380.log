@@ -1,0 +1,17 @@
+2024-07-26 09:38:44.416 | DEBUG    | FlightController.Components.RosNode:<module>:28 - [ROS] rclpy.init()
+2024-07-26 09:38:44.872 | WARNING  | __main__:<module>:198 - DEBUG MODE!!
+2024-07-26 09:38:44.873 | INFO     | FlightController.Remote:connect:207 - [FC_Client] Connecting to ('127.0.0.1', 5654)
+2024-07-26 09:38:44.873 | INFO     | FlightController.Remote:_client_task:162 - [FC_Client] Connected to server
+2024-07-26 09:38:44.973 | INFO     | FlightController.Protocal:_action_log:32 - [FC] [ACTION] WAIT OK -> fc connection
+2024-07-26 09:38:45.014 | INFO     | FlightController.Components.RosNode:__init__:89 - [ROS] T265ListenNode ready to start
+2024-07-26 09:38:45.014 | INFO     | FlightController.Components.RealSense:start:222 - [T265] Running in ROS mode, ready for topic update
+2024-07-26 09:38:45.019 | INFO     | FlightController.Components.RosNode:__init__:46 - [ROS] RadarListenNode ready to start
+2024-07-26 09:38:45.020 | INFO     | FlightController.Components.LDRadar_Driver:start:118 - [RADAR] Map resolve thread started
+2024-07-26 09:38:45.202 | INFO     | __main__:<module>:209 - Camera 0 opened
+2024-07-26 09:38:45.213 | INFO     | FlightController.Components.RosNode:__init__:202 - [ROS] PyTf2ListenNode_camera_pose_frame_map ready to start
+2024-07-26 09:38:45.222 | INFO     | FlightController.Components.RosNode:__init__:105 - [ROS] MapListenNode ready to start
+2024-07-26 09:38:45.232 | INFO     | FlightController.Components.RosNode:__init__:125 - [ROS] MapClientNode ready to start
+2024-07-26 09:38:45.233 | INFO     | FlightController.Components.RosMapper:__init__:57 - [MAPPER] Init success
+2024-07-26 09:38:45.234 | DEBUG    | FlightController.Components.RosNode:add_nodes:247 - [ROS] Executor added 5 nodes
+2024-07-26 09:38:45.235 | INFO     | FlightController.Components.RosNode:run:256 - [ROS] Executor started
+2024-07-26 09:38:45.266 | WARNING  | FlightController.Components.RosNode:timer_callback:208 - [ROS] PyTf2ListenNode_camera_pose_frame_map: No transform received over 1 second
